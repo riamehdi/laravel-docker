@@ -66,7 +66,7 @@ RUN source $NVM_DIR/nvm.sh \
       && npm config set fetch-retry-maxtimeout ${NPM_FETCH_RETRY_MAXTIMEOUT}
 
 # add node and npm to path so the commands are available
-ENV NODE_PATH=$NVM_DIR/.nvm/v$NODE_VERSION/lib/node_modules
+# ENV NODE_PATH=$NVM_DIR/.nvm/v$NODE_VERSION/lib/node_modules
 
 # Add local and global vendor bin to PATH.
 ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
