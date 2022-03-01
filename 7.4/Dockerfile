@@ -48,16 +48,12 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
     soap \
     zip
 
-# Add local and global vendor bin to PATH.
-ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$PATH
-RUN echo $PATH
-
 # Install PHP_CodeSniffer
 RUN composer global require "squizlabs/php_codesniffer=*"
 
 # install node
 # Install nvm (A Node Version Manager)
-RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
@@ -70,8 +66,10 @@ RUN source $NVM_DIR/nvm.sh \
       && npm config set fetch-retry-maxtimeout ${NPM_FETCH_RETRY_MAXTIMEOUT}
 
 # add node and npm to path so the commands are available
-ENV NODE_PATH=$NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+ENV NODE_PATH=$NVM_DIR/.nvm/v$NODE_VERSION/lib/node_modules
+
+# Add local and global vendor bin to PATH.
+ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
 RUN node -v
