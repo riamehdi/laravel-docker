@@ -48,7 +48,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
 
 # install node
 # Install nvm (A Node Version Manager)
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.31.2/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
