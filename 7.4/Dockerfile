@@ -49,6 +49,10 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
     soap \
     zip
 
+
+# Add local and global vendor bin to PATH.
+ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$PATH
+
 # Install PHP_CodeSniffer
 RUN composer global require "squizlabs/php_codesniffer=*"
 
@@ -66,7 +70,7 @@ RUN source $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 # Add local and global vendor bin to PATH.
-ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/v$NODE_VERSION/bin:$PATH
+ENV PATH $NVM_DIR/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
 RUN node -v
