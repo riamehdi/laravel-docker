@@ -73,8 +73,8 @@ ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
-RUN node -v
-RUN npm -v
+# RUN node -v
+# RUN npm -v
 
 # Setup working directory
 WORKDIR /var/www
