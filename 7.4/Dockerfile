@@ -3,10 +3,6 @@ FROM php:7.4.28-alpine3.15
 ENV NVM_DIR /usr/local/nvm
 RUN mkdir $NVM_DIR
 ENV NODE_VERSION="14.18.0"
-ENV NPM_FETCH_RETRIES=2
-ENV NPM_FETCH_RETRY_FACTOR=10
-ENV NPM_FETCH_RETRY_MINTIMEOUT=10000
-ENV NPM_FETCH_RETRY_MAXTIMEOUT=60000
 
 # Add docker-php-extension-installer script
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -50,10 +46,9 @@ RUN chmod +x /usr/local/bin/install-php-extensions && \
     zip
 
 
-
 # install node
 # Install nvm (A Node Version Manager)
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.31.2/install.sh | bash
 
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
@@ -62,13 +57,11 @@ RUN source $NVM_DIR/nvm.sh \
       && nvm use default
 
 # add node and npm to path so the commands are available
-# ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
-
-# Add local and global vendor bin to PATH.
-# ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
-RUN ls -la $NVM_DIR/versions/node/v$NODE_VERSION/bin/
+RUN  node -v
 # RUN npm -v
 
 # Add local and global vendor bin to PATH.
