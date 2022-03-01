@@ -1,6 +1,6 @@
 FROM php:7.4.28-alpine3.15
 
-ENV NVM_DIR /root/nvm
+ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION="14.18.0"
 ENV NPM_FETCH_RETRIES=2
 ENV NPM_FETCH_RETRY_FACTOR=10
@@ -57,6 +57,8 @@ RUN composer global require "squizlabs/php_codesniffer=*"
 # install node
 # Install nvm (A Node Version Manager)
 RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+RUN echo $PATH
 
 # install node and npm
 RUN source $NVM_DIR/nvm.sh \
