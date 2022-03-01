@@ -1,6 +1,6 @@
 FROM php:7.4.28-alpine3.15
 
-ENV NVM_DIR /home/.nvm
+ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION="14.18.0"
 ENV NPM_FETCH_RETRIES=2
 ENV NPM_FETCH_RETRY_FACTOR=10
@@ -56,20 +56,25 @@ RUN composer global require "squizlabs/php_codesniffer=*"
 
 # install node
 # Install nvm (A Node Version Manager)
-RUN mkdir -p $NVM_DIR && \
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
-      && . $NVM_DIR/nvm.sh \
-      && nvm install ${NODE_VERSION} \
-      && nvm use ${NODE_VERSION} \
-      && nvm alias ${NODE_VERSION} \
+RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# install node and npm
+RUN source $NVM_DIR/nvm.sh \
+      && nvm install $NODE_VERSION \
+      && nvm alias default $NODE_VERSION \
+      && nvm use default \
       && npm config set fetch-retries ${NPM_FETCH_RETRIES} \
       && npm config set fetch-retry-factor ${NPM_FETCH_RETRY_FACTOR} \
       && npm config set fetch-retry-mintimeout ${NPM_FETCH_RETRY_MINTIMEOUT} \
-      && npm config set fetch-retry-maxtimeout ${NPM_FETCH_RETRY_MAXTIMEOUT} \
-      && ln -s `npm bin --global` $HOME/.node-bin
+      && npm config set fetch-retry-maxtimeout ${NPM_FETCH_RETRY_MAXTIMEOUT}
 
-RUN node --version
-RUN npm --version
+# add node and npm to path so the commands are available
+ENV NODE_PATH=$NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+# confirm installation
+RUN node -v
+RUN npm -v
 
 # Setup working directory
 WORKDIR /var/www
