@@ -1,6 +1,7 @@
 FROM php:7.4.28-alpine3.15
 
-ENV NVM_DIR /usr/local
+ENV NVM_DIR /usr/local/nvm
+RUN mkdir $NVM_DIR
 ENV NODE_VERSION="14.18.0"
 ENV NPM_FETCH_RETRIES=2
 ENV NPM_FETCH_RETRY_FACTOR=10
@@ -62,14 +63,14 @@ RUN source $NVM_DIR/nvm.sh \
       && nvm use default
 
 # add node and npm to path so the commands are available
-ENV NODE_PATH=$NVM_DIR/.nvm/v$NODE_VERSION/lib/node_modules
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 
 # Add local and global vendor bin to PATH.
-ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
+ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
-RUN $NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin/node - v
-RUN $NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin/npm -v
+RUN node -v
+RUN npm -v
 
 # Setup working directory
 WORKDIR /var/www
