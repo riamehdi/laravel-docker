@@ -68,8 +68,8 @@ ENV NODE_PATH=$NVM_DIR/.nvm/v$NODE_VERSION/lib/node_modules
 ENV PATH ./vendor/bin:/composer/vendor/bin:/root/.composer/vendor/bin:/usr/local/bin:$NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin:$PATH
 
 # confirm installation
-RUN where node
-RUN where npm
+RUN $NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin/node - v
+RUN $NVM_DIR/.nvm/versions/node/v$NODE_VERSION/bin/npm -v
 
 # Setup working directory
 WORKDIR /var/www
